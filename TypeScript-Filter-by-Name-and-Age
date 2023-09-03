@@ -1,0 +1,52 @@
+import React, { useState, ChangeEvent } from "react";
+// import reactLogo from "./assets/react.svg";
+// import "./App.css";
+
+interface DataItem {
+  name: string;
+  age: number;
+}
+
+const data: DataItem[] = [
+  { name: "Deepak", age: 28 },
+  { name: "Vivek", age: 27 },
+  { name: "Manju", age: 26 }
+];
+
+export default function FiteredData() {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredData, setFilteredData] = useState<DataItem[]>(data);
+
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value.toLowerCase());
+    const filterResults = data.filter((item) => {
+      const filterByName = item.name.toLocaleLowerCase();
+      const filterByAge = item.age.toString();
+      return filterByName.includes(e.target.value.toLowerCase()) || filterByAge.includes(e.target.value);
+    });
+    setFilteredData(filterResults);
+  }
+  return (
+   <div>
+      <input
+        type ="text"
+        value = {searchTerm}
+        placeholder="Search..."
+        onChange={handleSearch}
+        style={{ border: "1px solid #ccc", marginBottom: "10px", padding:"10px"}}
+      />
+      {
+        filteredData.map((item, index) =>(
+          <div
+            key={index}
+            style={{ border: "1px solid #ccc", marginBottom: "10px", padding:"10px"}}
+          >
+            <p>Name: {item.name}</p>
+            <p>Age: {item.age}</p>
+          </div>
+        ))
+      }
+   </div> 
+  );
+}
+
